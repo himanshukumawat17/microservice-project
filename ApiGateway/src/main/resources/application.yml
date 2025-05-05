@@ -1,0 +1,33 @@
+server:
+  port: 9090
+spring:
+ cloud:
+   gateway:
+     routes:
+       - id: ORDER-SERVICE
+         uri: lb://ORDER-SERVICE
+         predicates:
+           - Path=/orders/**
+         filters:
+           - AuthenticationFilter
+
+
+       - id: PRODUCT-SERVICE
+         uri: lb://PRODUCT-SERVICE
+         predicates:
+           - Path=/api/**
+         filters:
+           - AuthenticationFilter
+
+       - id: identity-service
+         uri: lb://IDENTITY-SERVICE
+         predicates:
+           - Path=/auth/**
+
+ application:
+   name: Api-Gateway
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone : http://localhost:8761/eureka/
